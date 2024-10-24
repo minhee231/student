@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.saa.module.student.service.impl.StudentMapper">
+
+	<sql id="pageBefore">
+		SELECT * FROM
+		(SELECT RN.*, ROWNUM AS RNUM, COUNT(*) OVER() AS TOTCNT FROM(
+	</sql>
+	<sql id="pageAfter">
+		) RN
+		) WHERE RNUM &gt; #{firstIndex} AND RNUM &lt;= #{lastIndex}
+	</sql>
+
+	<select id="selectStudentList" resultType="egovMap">
+	/*selectStudentList*/
+	<include refid="pageBefore" />
+	SELECT
+		*
+	FROM (
+		SELECT
+			student_id,
+			student_name,
+			state,
+			entrance,
+			graduation,
+			leave_year,
+			expelled_year,
+			student_sex,
+			student_department,
+			student_grade,
+			student_class,
+			student_number
+		FROM saa_student_register a
+		WHERE 1=1
+			<if test="schFld != '' and schFld != null and schStr != '' and schStr != null">
+				<choose>
+					<when test="schFld == 'name'">
+						AND INSTR(student_name, #{schStr}) > 0
+					</when>
+					<when test="schFld == 'dept'">
+						AND student_department LIKE '%' || #{schStr} || '%'
+					</when>
+					<otherwise>
+						AND (
+							INSTR(student_name, #{schStr}) > 0
+							OR INSTR(student_department, #{schStr}) > 0
+						)
+					</otherwise>
+				</choose>
+			</if>
+		ORDER BY a.student_grade DESC, a.student_class, a.student_name
+	) t
+	<include refid="pageAfter" />
+	</select>
+
+
+	<insert id="insertStudent">
+	INSERT INTO saa_student_register(
+			student_id
+			,student_name
+			,state
+			,entrance
+			,graduation
+			,leave_year
+			,expelled_year
+			,student_sex
+			,student_department
+			,student_grade
+			,student_class
+			,student_number
+
+			)
+	VALUES (
+			#{studentId}
+			,#{studentName}
+			,#{state}
+			,#{entrance}
+			,#{graduation}
+			,#{leaveYear}
+			,#{expelledYear}
+			,#{studentSex}
+			,#{studentDepartment}
+			,#{studentGrade}
+			,#{studentClass}
+			,#{studentNumber}
+		)
+	</insert>
+
+	<insert id="insertStudentInfo">
+	INSERT INTO saa_student_information(
+			student_id
+			,student_name
+			,phone_number
+			,resident_registration_number
+			,address
+			,birth_date
+			,emergency_phone_number
+			)
+	VALUES (
+			#{studentId}
+			,#{studentName}
+			,#{phoneNumber}
+			,#{residentRegistrationNumber}
+			,#{address}
+			,#{birthDate}
+			,#{emergencyPhoneNumber}
+		)
+	</insert>
+
+	<insert id="insertStudentScores">
+	INSERT INTO saa_student_scores_information(
+			scores_id
+			,student_id
+			,score_year
+			,semester
+			,score_divion
+			,subject_id
+			,scores
+			)
+	VALUES (
+			#{scoresId}
+			,#{studentId}
+			,#{year}
+			,#{semester}
+			,#{scoreDivion}
+			,#{subjectId}
+			,#{score}
+		)
+	</insert>
+
+	<select id="selectStudentView" resultType="egovMap">
+		SELECT
+			*
+		FROM saa_student_register
+		WHERE student_id = #{id}
+	</select>
+
+	<select id="selectStudentGrade" resultType="string">
+		SELECT
+			student_grade
+		FROM saa_student_register
+		WHERE student_id = #{id};
+	</select>
+
+	<select id="selectStudentInfoView" resultType="egovMap">
+		SELECT
+			*
+		FROM saa_student_information
+		WHERE student_id = #{id}
+	</select>
+
+	<!--<select id="selectStudentScoresList" resultType="egovMap">
+		SELECT
+		    ssi.score_year,
+		    ssi.semester,
+		    ssi.score_divion,
+		    MAX(CASE WHEN ssi.subject_id = '0' THEN ssi.scores END) AS "korea_language",
+		    MAX(CASE WHEN ssi.subject_id = '1' THEN ssi.scores END) AS "english",
+		    MAX(CASE WHEN ssi.subject_id = '3' THEN ssi.scores END) AS "math",
+		    MAX(CASE WHEN ssi.subject_id = '2' THEN ssi.scores END) AS "science",
+		    SUM(ssi.scores) AS "sum",
+		    ROUND(avg(ssi.scores),1) AS "avg",
+			ssi.student_id
+		FROM saa_student_scores_information ssi
+		JOIN ssa_student_subject_information ssi_sub
+		    ON ssi.subject_id = ssi_sub.subject_id
+		WHERE ssi.student_id = #{studentId}
+		GROUP BY ssi.score_year, ssi.semester, ssi.score_divion
+		ORDER BY ssi.score_year, ssi.semester;
+	</select>-->
+
+	<select id="selectStudentScoresList" resultType="egovMap">
+		SELECT
+			*
+		FROM saa_student_scores_information sc
+
+		JOIN ssa_student_subject_information sj ON sc.subject_id = sj.subject_id
+
+		WHERE sc.student_id = #{studentId} AND sj.student_grade = #{grade};
+	</select>
+
+	<select id="selectSubjectList" resultType="egovMap">
+		SELECT
+			*
+		FROM ssa_student_subject_information
+		WHERE student_grade = #{grade};
+	</select>
+
+	<update id="updateStudent">
+		UPDATE saa_student_register
+			SET student_name = #{studentName}
+				,state = #{state}
+				,graduation = #{graduation}
+				,leave_year = #{leaveYear}
+				,expelled_year =#{expelledYear}
+				,student_grade = #{studentGrade}
+				,student_class = #{studentClass}
+				,student_number = #{studentNumber}
+
+		WHERE student_id = #{studentId};
+
+		UPDATE saa_student_information
+        	SET student_name = #{studentName}
+        WHERE student_id = #{studentId};
+	</update>
+
+	<update id="updateStudentInfo">
+		UPDATE saa_student_information
+			SET student_name = #{studentName}
+				,phone_number = #{phoneNumber}
+				,resident_registration_number = #{residentRegistrationNumber}
+				,address = #{address}
+				,birth_date =#{birthDate}
+				,emergency_phone_number = #{emergencyPhoneNumber}
+
+		WHERE student_id = #{studentId};
+
+		UPDATE saa_student_register
+        SET student_name = #{studentName}
+        WHERE student_id = #{studentId};
+	</update>
+
+	<delete id="deleteStudent">
+		DELETE FROM saa_student_register
+			WHERE student_id = #{studentId};
+	</delete>
+
+</mapper>
