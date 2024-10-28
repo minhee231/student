@@ -169,15 +169,6 @@
 		ORDER BY ssi.score_year, ssi.semester;
 	</select>-->
 
-	<select id="selectStudentScoresList" resultType="egovMap">
-		SELECT
-			*
-		FROM saa_student_scores_information sc
-
-		JOIN ssa_student_subject_information sj ON sc.subject_id = sj.subject_id
-
-		WHERE sc.student_id = #{studentId} AND sj.student_grade = #{grade};
-	</select>
 
 	<select id="selectSubjectList" resultType="egovMap">
 		SELECT

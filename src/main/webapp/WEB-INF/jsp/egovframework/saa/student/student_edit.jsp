@@ -158,7 +158,7 @@
 		</form>
 	</div>
 
-	<div>
+	<div class="redirect">
 		<a href="#" onclick="fn_saveStudent();">수정하기</a>
 	</div>
 

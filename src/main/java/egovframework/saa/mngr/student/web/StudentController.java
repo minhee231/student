@@ -2,7 +2,6 @@ package egovframework.saa.mngr.student.web;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -105,34 +104,6 @@ public class StudentController {
 		}
 
 		return "saa/student/student_info_view";
-
-	}
-
-	@RequestMapping(value = "/student/scores_view.do")
-	public String viewStudentScores(ModelMap model, HttpServletRequest request)
-			throws DataAccessException, RuntimeException, IOException, SQLException {
-		LOGGER.info("학생 점수 뷰");
-
-		String studentId = request.getParameter("student_id");
-		String defaultGrade = studentService.selectStudentGrade(studentId);
-		LOGGER.info(defaultGrade);
-		String grade = request.getParameter("grade") == null ? defaultGrade : request.getParameter("grade");
-		LOGGER.info("학년:::::" + grade);
-
-		EgovMap egovMap = new EgovMap();
-		egovMap.put("studentId", studentId);
-		egovMap.put("grade", grade);
-
-		LOGGER.info(studentId);
-		List<EgovMap> studentScoresList = studentService.selectStudentScoresList(egovMap);
-		LOGGER.info("점수 리스트 :::" + studentScoresList);
-		List<EgovMap> subjectList = studentService.selectSubjectList(grade);
-		LOGGER.info("과목 리스트 :::" + subjectList);
-
-		model.addAttribute("studentScoresList", studentScoresList);
-		model.addAttribute("subjectList", subjectList);
-
-		return "saa/scores/scores_view";
 
 	}
 
@@ -251,53 +222,7 @@ public class StudentController {
 	 * return "saa/scores/score_input_popup"; }
 	 */
 
-	@RequestMapping(value = "/scores/scores_input_popup.do")
-	public String inputStudentScores(ModelMap model, HttpServletRequest request)
-			throws DataAccessException, RuntimeException, IOException, SQLException {
-		LOGGER.info("학생 점수 등록 팝업");
 
-		String studentId = request.getParameter("student_id");
-		String[] scoresIdArray = request.getParameterValues("scoresId[]");
-	    List<String> scoresIdList = Arrays.asList(scoresIdArray);
-
-		LOGGER.info(studentId);
-		LOGGER.info(scoresIdList);
-
-		model.addAttribute("studentId", studentId);
-		model.addAttribute("scoresIdList", scoresIdList);
-
-		return "saa/scores/score_input_popup";
-	}
-
-	@RequestMapping(value = "/student/student_scores_input_proc.do")
-	public String inputStudentScoresProc(ModelMap model, HttpServletRequest request)
-			throws DataAccessException, RuntimeException, IOException, SQLException {
-		LOGGER.info("학생 점수 등록 처리");
-
-		String studentId = request.getParameter("student_id");
-		String year = request.getParameter("year");
-		String semester = request.getParameter("semester");
-		String scoreDivion = request.getParameter("score_divion");
-		String subjectId = request.getParameter("subject_id");
-		float score = Float.parseFloat(request.getParameter("score"));
-
-		String scoresId = studentService.generateUniqueId();
-
-		EgovMap egovMap = new EgovMap();
-		egovMap.put("scoresId", scoresId);
-		egovMap.put("studentId", studentId);
-		egovMap.put("year", year);
-		egovMap.put("semester", semester);
-		egovMap.put("scoreDivion", scoreDivion);
-		egovMap.put("subjectId", subjectId);
-		egovMap.put("score", score);
-
-		LOGGER.info("egovMap ::: " + egovMap);
-
-		studentService.insertStudentScores(egovMap);
-
-		return "redirect:./student_scores_view.do?student_id=" + studentId;
-	}
 
 	/*
 	 * EDIT=========================================================================
@@ -411,10 +336,7 @@ public class StudentController {
 		return "redirect:./student_list.do";
 	}
 
-	/*
-	 * DELETE=======================================================================
-	 * ================
-	 */
+
 
 	@RequestMapping(value = "/student/student_delete_proc.do")
 	public String deleteStudent(ModelMap model, HttpServletRequest request)
@@ -429,22 +351,6 @@ public class StudentController {
 		if (!student) {
 			return "삭제 실패";
 		}
-
-		return "redirect:./student_list.do";
-	}
-
-//테스트====================
-	@RequestMapping(value = "/student/test.do")
-	public String test(ModelMap model, HttpServletRequest request)
-			throws DataAccessException, RuntimeException, IOException, SQLException {
-		LOGGER.info("테스트");
-
-		String studentId = "202410161700123";
-
-		LOGGER.info(studentId);
-		String studentGrade = studentService.selectStudentGrade(studentId);
-
-		LOGGER.info(studentGrade);
 
 		return "redirect:./student_list.do";
 	}

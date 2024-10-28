@@ -38,17 +38,6 @@ public class StudentServiceImpl extends EgovAbstractServiceImpl implements Stude
 		return studentMapper.selectStudentInfoView(id);
 	}
 
-	public List<EgovMap> selectStudentScoresList(EgovMap paramMap) throws DataAccessException, SQLException {
-		return studentMapper.selectStudentScoresList(paramMap);
-	}
-
-	public List<EgovMap> selectSubjectList(String grade) throws SQLException {
-		return studentMapper.selectSubjectList(grade);
-	}
-
-	public String selectStudentGrade(String id) throws SQLException {
-		return studentMapper.selectStudentGrade(id);
-	}
 
 	public boolean insertStudent(EgovMap student) throws SQLException {
 		return studentMapper.insertStudent(student);
@@ -70,9 +59,6 @@ public class StudentServiceImpl extends EgovAbstractServiceImpl implements Stude
 		return studentMapper.deleteStudent(id);
 	}
 
-	public boolean insertStudentScores(EgovMap studentScores) throws SQLException {
-		return studentMapper.insertStudentScores(studentScores);
-	}
 	public String generateUniqueId() {
 		Random random = new Random();
         String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());

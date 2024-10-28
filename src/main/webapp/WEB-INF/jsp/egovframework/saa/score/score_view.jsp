@@ -10,7 +10,7 @@
 	<title>학생 성적 뷰</title>
 	<link rel="stylesheet" type="text/css" href="/css/egovframework/student_table.css">
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 
 	<style>
 		.dataTable { border-collapse: collapse; width:1000px; }
@@ -23,7 +23,6 @@
 	<script>
 function openEditPopup(button) {
 	var frm = button.closest("form");
-    /* var frm = document.querySelector("#frmScore"); */
     var formData = new FormData(frm);
 
     var data = {};
@@ -40,15 +39,45 @@ function openEditPopup(button) {
     });
 
     var params = new URLSearchParams(data).toString();
+    console.log(params);
 
-    var popup = window.open('/scores/scores_input_popup.do?' + params, 'scorePopup', 'width=600,height=800,scrollbars=yes,resizable=yes');
+    var popup = window.open('/score/score_edit_popup.do?' + params, 'scorePopup', 'width=600,height=800,scrollbars=yes,resizable=yes');
 }
 
+function openInputPopup(semester, division) {
+	var studentId =  ${studentId};
+	var grade = ${subjectList[0].studentGrade};
+	var popup = window.open(
+	        '/score/score_input_popup.do?student_id=' + studentId + '&grade=' + grade +
+	        '&semester=' + semester + '&division=' + division,
+	        'scorePopup',
+	        'width=600,height=800,scrollbars=yes,resizable=yes'
+	    );
+}
+
+function setAction() {
+    var studentId = "${studentScoresList[0].studentId}";
+    var selectedGrade = document.getElementById("grade").value;
+    console.log(selectedGrade);
+
+    var url = "score_view.do?student_id=" + studentId + "&grade=" + selectedGrade;
+
+    window.location.href = url;
+}
 
 </script>
 <body>
 	<div>
 		<h3>학생 성적</h3>
+		<form id="setGrade" name="setGrade" method="GET" class="selectBox">
+		    <label for="grade">학년</label>
+		    <select id="grade" name="grade">
+		        <option value="1">1학년</option>
+		        <option value="2">2학년</option>
+		        <option value="3">3학년</option>
+		    </select>
+		    <h1 onClick="setAction()">검색</h1>
+		</form>
 <table class="dataTable">
     <tr>
         <th>학기</th>
@@ -72,7 +101,7 @@ function openEditPopup(button) {
                         <c:forEach var="scores" items="${studentScoresList}">
                             <c:if test="${scores.subjectId == subject.subjectId && scores.semester == semester && scores.scoreDivion == division}">
                             <c:set var="currentScoreId" value="${scores.scoresId}" />
-                                <c:out value="${scores.scoresId}" />
+                                <c:out value="${scores.scores}" />
                                 <c:set var="scoreFound" value="true" />
                             </c:if>
                         </c:forEach>
@@ -88,6 +117,7 @@ function openEditPopup(button) {
     <form name="frmScore" id="frmScore">
         <input type="hidden" name="student_id" value="${studentScoresList[0].studentId}">
 
+
         <c:forEach var="score" items="${studentScoresList}">
             <c:if test="${score.semester == semester && score.scoreDivion == division}">
                 <input type="hidden" name="scoresId[]" value="${score.scoresId}" />
@@ -96,7 +126,7 @@ function openEditPopup(button) {
 
         <c:choose>
             <c:when test="${scoreFound == false}">
-                <button type="button" onclick="openInputPopup()">등록</button>
+                <button type="button" onclick="openInputPopup('${semester}', '${division}')">등록</button>
             </c:when>
             <c:otherwise>
                 <button type="button" onclick="openEditPopup(this)">수정</button>
@@ -118,7 +148,7 @@ function openEditPopup(button) {
 
 	</div>
 	<div class="redirect">
-		<a href="student_view.do?student_id=${studentScoresList[0].studentId}">학생정보</a>
+		<a href="/student/student_view.do?student_id=${studentScoresList[0].studentId}">학생정보</a>
 	</div>
 </body>
 </html>

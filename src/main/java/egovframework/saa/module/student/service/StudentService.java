@@ -14,12 +14,6 @@ public interface StudentService {
 
 	EgovMap selectStudentInfoView(String id) throws SQLException;
 
-	List<EgovMap> selectStudentScoresList(EgovMap paramMap) throws SQLException;
-
-	List<EgovMap> selectSubjectList(String grade) throws SQLException;
-
-	String selectStudentGrade(String id) throws SQLException;
-
 	boolean insertStudent(EgovMap student) throws SQLException;
 
 	boolean insertStudentInfo(EgovMap student) throws SQLException;
@@ -32,6 +26,6 @@ public interface StudentService {
 
 	String generateUniqueId();
 
-	boolean insertStudentScores(EgovMap studentScores) throws SQLException;
+
 
 }

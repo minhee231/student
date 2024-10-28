@@ -44,6 +44,10 @@ th {
     padding: 50px;
 }
 
+.selectBox {
+	text-align: center;
+}
+
 .clearfix::after {
     content: "";
     clear: both;

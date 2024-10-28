@@ -115,7 +115,7 @@
 		<a href="student_info_view.do?student_id=${studentView.studentId}">개인정보</a>
 		<a href="student_edit.do?student_id=${studentView.studentId}">수정</a>
 		<a href="student_delete_proc.do?student_id=${studentView.studentId}">삭제</a>
-		<a href="scores_view.do?student_id=${studentView.studentId}">성적</a>
+		<a href="/score/score_view.do?student_id=${studentView.studentId}">성적</a>
 	</div>
 
 </body>

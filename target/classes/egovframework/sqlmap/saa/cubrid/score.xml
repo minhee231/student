@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.saa.module.student.service.impl.ScoreMapper">
+
+	<select id="selectStudentGrade" resultType="string">
+		SELECT
+			student_grade
+		FROM saa_student_register
+		WHERE student_id = #{id};
+	</select>
+
+	<select id="selectSubjectList" resultType="egovMap">
+		SELECT
+			*
+		FROM ssa_student_subject_information
+		WHERE student_grade = #{grade};
+	</select>
+
+	<select id="selectStudentScoresList" resultType="egovMap">
+		SELECT
+			*
+		FROM saa_student_scores_information sc
+
+		JOIN ssa_student_subject_information sj ON sc.subject_id = sj.subject_id
+
+		WHERE sc.student_id = #{studentId} AND sj.student_grade = #{grade};
+	</select>
+
+	<select id="selectSubjectNameByScoreId" resultType="string">
+		SELECT
+			subject_name
+		FROM ssa_student_subject_information
+		WHERE subject_id = (
+			SELECT subject_id
+			FROM saa_student_scores_information
+			WHERE scores_id = #{scoresId}
+			)
+	</select>
+
+	<select id="selectSubjectNamesByGrade" resultType="string">
+		SELECT subject_name
+		FROM ssa_student_subject_information
+		WHERE subject_year = #{nowYear} -
+			CAST((
+				SELECT (student_grade-#{grade})
+				FROM saa_student_register
+				WHERE student_id = #{studentId}) AS INT)
+		AND student_grade = #{grade}
+	</select>
+
+	<update id="updateScore">
+		UPDATE
+			saa_student_scores_information
+		SET scores = #{scores}
+		WHERE scores_id = #{scoresId}
+	</update>
+
+	<insert id="insertScore">
+		INSERT INTO saa_student_scores_information (
+			scores_id,
+			student_id,
+			score_year,
+			semester,
+			score_divion,
+			subject_id,
+			scores
+			)
+		VALUE (
+			#{scoresId},
+			#{studentId},
+			#{nowYear} - CAST((SELECT (student_grade-#{grade}) FROM saa_student_register WHERE student_id = #{studentId}) AS INT),
+			#{semester},
+			#{division},
+			(SELECT subject_id FROM ssa_student_subject_information
+				WHERE subject_year = #{nowYear} - CAST((SELECT (student_grade-#{grade}) FROM saa_student_register WHERE student_id = #{studentId}) AS INT)
+				AND subject_name = #{subjectName}
+				AND student_grade = #{grade}
+				),
+			#{score}
+		)
+	</insert>
+
+
+</mapper>
