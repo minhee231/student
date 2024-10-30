@@ -13,10 +13,11 @@
 		SELECT
 			*
 		FROM ssa_student_subject_information
-		WHERE student_grade = #{grade};
+		WHERE student_grade = #{grade}
+		AND subject_year = #{nowYear} - CAST((SELECT (student_grade-#{grade}) FROM saa_student_register WHERE student_id = #{studentId}) AS INT);
 	</select>
 
-	<select id="selectStudentScoresList" resultType="egovMap">
+	<!--<select id="selectStudentScoresList" resultType="egovMap">
 		SELECT
 			*
 		FROM saa_student_scores_information sc
@@ -24,6 +25,29 @@
 		JOIN ssa_student_subject_information sj ON sc.subject_id = sj.subject_id
 
 		WHERE sc.student_id = #{studentId} AND sj.student_grade = #{grade};
+	</select>-->
+
+	<select id="selectStudentScoresList" resultType="egovMap">
+	SELECT
+        sc.scores_id,
+        sc.student_id,
+        sc.score_year,
+        sc.semester,
+        sc.score_divion,
+        sc.subject_id,
+        sc.scores,
+        sj.subject_name,
+        sj.subject_year,
+        sj.student_department,
+        sj.student_grade,
+        SUM(sc.scores) OVER(PARTITION BY sc.semester, sc.score_divion) AS total_sum,
+        ROUND(AVG(sc.scores) OVER(PARTITION BY sc.semester, sc.score_divion), 1) AS avg_score
+
+	FROM saa_student_scores_information sc
+	JOIN ssa_student_subject_information sj ON sc.subject_id = sj.subject_id
+	WHERE sc.student_id = #{studentId}
+		AND sj.student_grade = #{grade};
+
 	</select>
 
 	<select id="selectSubjectNameByScoreId" resultType="string">
@@ -40,11 +64,7 @@
 	<select id="selectSubjectNamesByGrade" resultType="string">
 		SELECT subject_name
 		FROM ssa_student_subject_information
-		WHERE subject_year = #{nowYear} -
-			CAST((
-				SELECT (student_grade-#{grade})
-				FROM saa_student_register
-				WHERE student_id = #{studentId}) AS INT)
+		WHERE subject_year = #{year}
 		AND student_grade = #{grade}
 	</select>
 
@@ -55,7 +75,7 @@
 		WHERE scores_id = #{scoresId}
 	</update>
 
-	<insert id="insertScore">
+<!--	<insert id="insertScore">
 		INSERT INTO saa_student_scores_information (
 			scores_id,
 			student_id,
@@ -78,7 +98,26 @@
 				),
 			#{score}
 		)
+	</insert>-->
+
+		<insert id="insertScore">
+		INSERT INTO saa_student_scores_information (
+			scores_id,
+			student_id,
+			score_year,
+			semester,
+			score_divion,
+			subject_id,
+			scores
+			)
+		VALUE (
+			#{scoresId},
+			#{studentId},
+			#{nowYear} - CAST((SELECT (student_grade-#{grade}) FROM saa_student_register WHERE student_id = #{studentId}) AS INT),
+			#{semester},
+			#{division},
+			#{subjectId},
+			#{score}
+		)
 	</insert>
-
-
 </mapper>

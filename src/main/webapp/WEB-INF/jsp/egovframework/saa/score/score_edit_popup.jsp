@@ -16,7 +16,6 @@ function fn_saveScore() {
     var scoresIdArray = [];
     var scoreArray = [];
 
-    // scores_id와 score 값을 각각의 배열에 추가
     formData.forEach((value, key) => {
         if (key === 'scores_id') {
             scoresIdArray.push(value);
@@ -25,17 +24,15 @@ function fn_saveScore() {
         }
     });
 
-    // 두 배열을 묶어 JSON 배열로 변환
+
     var data = scoresIdArray.map((scores_id, index) => {
         return {
             [scores_id]: scoreArray[index]
         };
     });
 
-    // 콘솔로 확인
     console.log(JSON.stringify(data));
 
-    // AJAX로 전송
     $.ajax({
         url: 'score_edit_proc.do',
         type: 'POST',
@@ -66,7 +63,7 @@ function fn_saveScore() {
 						<input type="hidden" name="scores_id" id="scores_id" value="${scoresIdList[status.index ]}" />
 					</th>
 
-					<td><input type="text" name="score" id="score" size="20" value="" /></td>
+					<td><input type="text" name="score" id="score" size="20" value="${ scoresList[status.index ]}" /></td>
 				</tr>
 				<tr>
 			</c:forEach>

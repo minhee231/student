@@ -15,36 +15,37 @@ function fn_saveScore() {
 
     var scoresIdArray = [];
     var scoreArray = [];
+    var subjectIdArray = [];
     var semester = formData.get("semester");
     var division = formData.get("division");
     var studentId = ${egovMap.studentId};
     var grade = ${egovMap.grade};
-    var nowYear = ${egovMap.nowYear};
-
+    /* var nowYear = ${egovMap.nowYear}; */
 
     formData.forEach((value, key) => {
         if (key === "subject_name") {
             scoresIdArray.push(value);
         } else if (key === 'score') {
             scoreArray.push(value);
-        }
+        } else if (key === 'subject_id') {
+        	subjectIdArray.push(value);
+		}
     });
 
-    var data = scoresIdArray.map((scores_id, index) => {
+    var scoresData = scoresIdArray.map((scores_id, index) => {
         return {
             [scores_id]: scoreArray[index]
         };
     });
 
-    // semester와 division 추가
     var requestData = {
-    	studentId: studentId,
-    	grade: grade,
-    	nowYear: nowYear,
-        semester: semester,
-        division: division,
-        scores: data
-    };
+        	studentId: studentId,
+        	grade: grade,
+            semester: semester,
+            division: division,
+            scores: scoresData,
+            subjectId: subjectIdArray
+        };
 
     console.log(JSON.stringify(requestData));
 
@@ -69,7 +70,7 @@ function fn_saveScore() {
 </head>
 <body>
 	<div>
-		<h3>학생 점수 등록</h3>
+		<h3>${year}년도 학생 점수 등록</h3>
 		<form name="scoreFrm" id="scoreFrm" method="post" action="student_edit_proc.do">
 		<table class="dataTable">
 			<c:forEach var="subjectName" items="${subjectNames}" varStatus="status">
@@ -77,6 +78,7 @@ function fn_saveScore() {
 					<th>
 						<c:out value="${subjectName }"></c:out>
 						<input type="hidden" name="subject_name" id="subject_name" value="${subjectName}" />
+						<input type="hidden" name="subject_id" id="subject_id" value="${subjectIdList[status.index]}" />
 						<input type="hidden" name="semester" id="semester" value="${semester}" />
 						<input type="hidden" name="division" id="division" value="${division}" />
 					</th>
@@ -89,7 +91,7 @@ function fn_saveScore() {
 		</form>
 	</div>
 	<div class="redirect">
-		<a href="#" onclick="fn_saveScore();">수정하기</a>
+		<a href="#" onclick="fn_saveScore();">등록하기</a>
 	</div>
 </body>
 </html>

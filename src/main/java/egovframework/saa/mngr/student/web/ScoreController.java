@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +39,7 @@ public class ScoreController {
 
 		String studentId = request.getParameter("student_id");
 		String defaultGrade = scoreService.selectStudentGrade(studentId);
+		String nowYear = scoreService.getNowYear();
 		LOGGER.info(defaultGrade);
 		String grade = request.getParameter("grade") == null ? defaultGrade : request.getParameter("grade");
 		LOGGER.info("학년:::::" + grade);
@@ -45,11 +47,12 @@ public class ScoreController {
 		EgovMap egovMap = new EgovMap();
 		egovMap.put("studentId", studentId);
 		egovMap.put("grade", grade);
+		egovMap.put("nowYear", nowYear);
 
 		LOGGER.info(studentId);
 		List<EgovMap> studentScoresList = scoreService.selectStudentScoresList(egovMap);
 		LOGGER.info("점수 리스트 :::" + studentScoresList);
-		List<EgovMap> subjectList = scoreService.selectSubjectList(grade);
+		List<EgovMap> subjectList = scoreService.selectSubjectList(egovMap);
 		LOGGER.info("과목 리스트 :::" + subjectList);
 
 		model.addAttribute("studentId", studentId);
@@ -67,7 +70,9 @@ public class ScoreController {
 
 		String studentId = request.getParameter("student_id");
 		String[] scoresIdArray = request.getParameterValues("scoresId[]");
+		String[] scoresArray = request.getParameterValues("scores[]");
 		List<String> scoresIdList = Arrays.asList(scoresIdArray[0].split(","));
+		List<String> scoresList = Arrays.asList(scoresArray[0].split(","));
 
 	    List<String> subjectNames = new ArrayList<>();
 
@@ -79,10 +84,12 @@ public class ScoreController {
 		LOGGER.info(studentId);
 		LOGGER.info(scoresIdList);
 		LOGGER.info(subjectNames);
+		LOGGER.info(scoresList);
 
 		model.addAttribute("studentId", studentId);
 		model.addAttribute("scoresIdList", scoresIdList);
 		model.addAttribute("subjectNames", subjectNames);
+		model.addAttribute("scoresList", scoresList);
 
 		return "saa/score/score_edit_popup";
 	}
@@ -119,13 +126,17 @@ public class ScoreController {
 		String grade = request.getParameter("grade");
 		String semester = request.getParameter("semester");
 		String division = request.getParameter("division");
+		String year = request.getParameter("year");
 		String nowYear = scoreService.getNowYear();
+		String[] subejctIdArray = request.getParameterValues("subjectId[]");
+		List<String> subjectIdList = Arrays.asList(subejctIdArray[0].split(","));
+
+		LOGGER.info(subjectIdList);
 
 		EgovMap egovMap = new EgovMap();
 		egovMap.put("studentId", studentId);
 		egovMap.put("grade", grade);
-		egovMap.put("nowYear", nowYear);
-
+		egovMap.put("year", year);
 
 		LOGGER.info("년도" +nowYear);
 		LOGGER.info(egovMap);
@@ -136,8 +147,10 @@ public class ScoreController {
 
 		model.addAttribute("subjectNames", subjectNames);
 		model.addAttribute("semester", semester);
+		model.addAttribute("year", year);
 		model.addAttribute("division", division);
 		model.addAttribute("egovMap", egovMap);
+		model.addAttribute("subjectIdList", subjectIdList);
 
 		return "saa/score/score_input_popup";
 	}
@@ -149,8 +162,6 @@ public class ScoreController {
 
 	    LOGGER.info(requestData);
 
-	    //String studentId = (String) requestData.get("studentId");
-	    //String grade = (String) requestData.get("grade");
 	    String nowYear = scoreService.getNowYear();
 	    String studentId = String.valueOf(requestData.get("studentId"));
 	    String grade = String.valueOf(requestData.get("grade"));
@@ -159,7 +170,10 @@ public class ScoreController {
 	    LOGGER.info(semester);
 
 	    List<Map<String, Object>> scores = (List<Map<String, Object>>) requestData.get("scores");
-	    LOGGER.info("점수 데이터: " + scores);
+	    List<String> subjectIdList = (List<String>) requestData.get("subjectId");
+	    LOGGER.info("과목Id: " + subjectIdList);
+
+	    Iterator<String> subjectIdIterator = subjectIdList.iterator();
 
 	    for (Map<String, Object> scoreEntry : scores) {
 	        scoreEntry.forEach((key, value) -> {
@@ -173,10 +187,13 @@ public class ScoreController {
 	            scoreInfo.put("studentId", studentId);
 				scoreInfo.put("grade", grade);
 	            scoreInfo.put("nowYear", nowYear);
+	            scoreInfo.put("subjectId", subjectIdIterator.next());
+	            LOGGER.info(scoreInfo);
 	            try {
 					scoreService.insertScore(scoreInfo);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 	            LOGGER.info("과목: " + key + ", 점수: " + value);

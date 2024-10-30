@@ -96,15 +96,15 @@
 			</tr>
 			<tr>
 				<th>졸업/전출 날짜</th>
-				<td><input type="text" name="graduation" id="graduation" size="10" value="${studentView.graduation}"/></td>
+				<td><input type="text" name="graduation" id="graduation" size="10" maxlength="4" value="${studentView.graduation}"/></td>
 			</tr>
 			<tr>
 				<th>휴학년도</th>
-				<td><input type="text" name="leave_year" id="leave_year" size="5" value="${studentView.leaveYear}"/></td>
+				<td><input type="text" name="leave_year" id="leave_year" size="5" maxlength="4" value="${studentView.leaveYear}"/></td>
 			</tr>
 			<tr>
 				<th>퇴학년도</th>
-				<td><input type="text" name="expelled_year" id="expelled_year" size="5" value="${studentView.expelledYear}"/></td>
+				<td><input type="text" name="expelled_year" id="expelled_year" size="5" maxlength="4" value="${studentView.expelledYear}"/></td>
 			</tr>
 			<tr>
 				<th>성별</th>
@@ -148,11 +148,11 @@
 			</tr>
 			<tr>
 				<th>반</th>
-				<td><input type="text" name="student_class" id="student_class" size="3" value="${studentView.studentClass}"/></td>
+				<td><input type="text" name="student_class" id="student_class" size="3" maxlength="2" value="${studentView.studentClass}"/></td>
 			</tr>
 			<tr>
 				<th>번호</th>
-				<td><input type="text" name="student_number" id="student_number" size="3" value="${studentView.studentNumber}"/></td>
+				<td><input type="text" name="student_number" id="student_number" size="3" maxlength="2" value="${studentView.studentNumber}"/></td>
 			</tr>
 		</table>
 		</form>

@@ -27,6 +27,9 @@ public interface StudentMapper {
 
 	boolean deleteStudent(String id) throws SQLException;
 
+	boolean deleteStudentInfo(String id) throws SQLException;
+
 	boolean insertStudentScores(EgovMap studentScores) throws SQLException;
+
 
 }

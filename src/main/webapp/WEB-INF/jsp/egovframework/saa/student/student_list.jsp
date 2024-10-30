@@ -30,7 +30,6 @@
 	<div>
 		<h3>학생 목록</h3>
 
-		<!-- 검색창 추가 -->
 		<form method="GET" action="student_list.do">
 			<label for="schFld">검색 필드:</label>
 			<select id="schFld" name="schFld">
@@ -65,9 +64,7 @@
         				</a>
        				</td>
 					<td class="tac">
-						<a href="/student/student_info_view.do?student_id=${list.studentId}">
         					<c:out value="${list.studentName}" />
-        				</a>
        				</td>
 					<td class="tac"><c:out value="${list.state}" /></td>
 					<td class="tac"><c:out value="${list.entrance}" /></td>

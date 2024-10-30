@@ -24,6 +24,8 @@ public interface StudentService {
 
 	boolean deleteStudent(String id) throws SQLException;
 
+	boolean deleteStudentInfo(String id) throws SQLException;
+
 	String generateUniqueId();
 
 

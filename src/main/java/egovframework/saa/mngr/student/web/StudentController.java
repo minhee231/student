@@ -76,7 +76,9 @@ public class StudentController {
 
 		LOGGER.info(studentId);
 		EgovMap studentView = studentService.selectStudentView(studentId);
+		EgovMap studentInfoView = studentService.selectStudentInfoView(studentId);
 		model.addAttribute("studentView", studentView);
+		model.addAttribute("studentInfoView", studentInfoView);
 
 		LOGGER.info(studentView);
 
@@ -284,7 +286,7 @@ public class StudentController {
 			return "실패";
 		}
 
-		return "redirect:./student_list.do";
+		return "redirect:./student_view.do?student_id=" + studentId;
 	}
 
 	@RequestMapping(value = "/student/student_info_edit.do")
@@ -333,7 +335,7 @@ public class StudentController {
 			return "실패";
 		}
 
-		return "redirect:./student_list.do";
+		return "redirect:./student_view.do?student_id=" + studentId;
 	}
 
 
@@ -347,6 +349,23 @@ public class StudentController {
 
 		LOGGER.info(studentId);
 		boolean student = studentService.deleteStudent(studentId);
+
+		if (!student) {
+			return "삭제 실패";
+		}
+
+		return "redirect:./student_list.do";
+	}
+
+	@RequestMapping(value = "/student/student_info_delete_proc.do")
+	public String deleteStudentInfo(ModelMap model, HttpServletRequest request)
+			throws DataAccessException, RuntimeException, IOException, SQLException {
+		LOGGER.info("학생 개인정보 삭제");
+
+		String studentId = request.getParameter("student_id");
+
+		LOGGER.info(studentId);
+		boolean student = studentService.deleteStudentInfo(studentId);
 
 		if (!student) {
 			return "삭제 실패";

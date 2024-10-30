@@ -11,7 +11,7 @@ public interface ScoreService {
 
 	List<EgovMap> selectStudentScoresList(EgovMap paramMap) throws SQLException;
 
-	List<EgovMap> selectSubjectList(String grade) throws SQLException;
+	List<EgovMap> selectSubjectList(EgovMap paramMap) throws SQLException;
 
 	String selectSubjectNameByScoreId(String scoresId) throws SQLException;
 

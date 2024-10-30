@@ -149,26 +149,6 @@
 		WHERE student_id = #{id}
 	</select>
 
-	<!--<select id="selectStudentScoresList" resultType="egovMap">
-		SELECT
-		    ssi.score_year,
-		    ssi.semester,
-		    ssi.score_divion,
-		    MAX(CASE WHEN ssi.subject_id = '0' THEN ssi.scores END) AS "korea_language",
-		    MAX(CASE WHEN ssi.subject_id = '1' THEN ssi.scores END) AS "english",
-		    MAX(CASE WHEN ssi.subject_id = '3' THEN ssi.scores END) AS "math",
-		    MAX(CASE WHEN ssi.subject_id = '2' THEN ssi.scores END) AS "science",
-		    SUM(ssi.scores) AS "sum",
-		    ROUND(avg(ssi.scores),1) AS "avg",
-			ssi.student_id
-		FROM saa_student_scores_information ssi
-		JOIN ssa_student_subject_information ssi_sub
-		    ON ssi.subject_id = ssi_sub.subject_id
-		WHERE ssi.student_id = #{studentId}
-		GROUP BY ssi.score_year, ssi.semester, ssi.score_divion
-		ORDER BY ssi.score_year, ssi.semester;
-	</select>-->
-
 
 	<select id="selectSubjectList" resultType="egovMap">
 		SELECT
@@ -213,6 +193,11 @@
 
 	<delete id="deleteStudent">
 		DELETE FROM saa_student_register
+			WHERE student_id = #{studentId};
+	</delete>
+
+	<delete id="deleteStudentInfo">
+		DELETE FROM saa_student_information
 			WHERE student_id = #{studentId};
 	</delete>
 

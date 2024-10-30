@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.Random;
 
 public class UniqueId {
-    public static String generateUniqueId() { // static 메서드로 변경
+    public static String generateUniqueId() {
         Random random = new Random();
         String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 

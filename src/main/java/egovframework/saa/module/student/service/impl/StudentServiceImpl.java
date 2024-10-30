@@ -14,6 +14,7 @@ import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.stringtemplate.v4.compiler.CodeGenerator.region_return;
 
 import egovframework.saa.mngr.student.web.StudentController;
 import egovframework.saa.module.student.service.StudentService;
@@ -57,6 +58,10 @@ public class StudentServiceImpl extends EgovAbstractServiceImpl implements Stude
 
 	public boolean deleteStudent(String id) throws SQLException {
 		return studentMapper.deleteStudent(id);
+	}
+
+	public boolean deleteStudentInfo(String id) throws SQLException {
+		return studentMapper.deleteStudentInfo(id);
 	}
 
 	public String generateUniqueId() {
