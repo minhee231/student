@@ -40,6 +40,7 @@ function fn_saveScore() {
         data: JSON.stringify(data),
         success: function(response) {
             console.log('성공:', response);
+            window.opener.fetchTableData();
             window.close()
         },
         error: function(xhr, status, error) {

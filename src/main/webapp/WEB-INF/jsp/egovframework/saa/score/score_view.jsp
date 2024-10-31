@@ -46,6 +46,10 @@ function openEditPopup(button) {
     var popup = window.open('/score/score_edit_popup.do?' + params, 'scorePopup', 'width=600,height=800,scrollbars=yes,resizable=yes');
 }
 
+/* function requestTable() {
+
+} */
+
 /* function openInputPopup(semester, division) {
 	var studentId =  ${studentId};
 	var grade = ${subjectList[0].studentGrade};
@@ -92,7 +96,7 @@ function openInputPopup(button, semester, division) {
 }
 
 
-function setAction() {
+function fetchTableData() {
     const studentId = "${studentId}";
     const selectedGrade = document.getElementById("grade").value;
 
