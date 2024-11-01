@@ -162,7 +162,7 @@ public class ScoreController {
 
 	    LOGGER.info(requestData);
 
-	    String nowYear = scoreService.getNowYear();
+	    String year = String.valueOf(requestData.get("year"));
 	    String studentId = String.valueOf(requestData.get("studentId"));
 	    String grade = String.valueOf(requestData.get("grade"));
 	    String semester = (String) requestData.get("semester");
@@ -186,7 +186,7 @@ public class ScoreController {
 	            scoreInfo.put("division", division);
 	            scoreInfo.put("studentId", studentId);
 				scoreInfo.put("grade", grade);
-	            scoreInfo.put("nowYear", nowYear);
+	            scoreInfo.put("year", year);
 	            scoreInfo.put("subjectId", subjectIdIterator.next());
 	            LOGGER.info(scoreInfo);
 	            try {
@@ -199,9 +199,10 @@ public class ScoreController {
 	            LOGGER.info("과목: " + key + ", 점수: " + value);
 	            LOGGER.info(scoreInfo);
 
-
 	        });
 	    }
+	    LOGGER.info("점수 등록 끝");
+
 	    return ResponseEntity.ok("success");
 	}
 }

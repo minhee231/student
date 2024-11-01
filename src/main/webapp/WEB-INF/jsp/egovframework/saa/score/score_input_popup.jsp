@@ -10,6 +10,7 @@
 <title>score</title>
 <script>
 function fn_saveScore() {
+	console.log("시이이작!");
     var form = document.querySelector("#scoreFrm");
     var formData = new FormData(form);
 
@@ -20,7 +21,7 @@ function fn_saveScore() {
     var division = formData.get("division");
     var studentId = ${egovMap.studentId};
     var grade = ${egovMap.grade};
-    /* var nowYear = ${egovMap.nowYear}; */
+    var year = ${year}
 
     formData.forEach((value, key) => {
         if (key === "subject_name") {
@@ -44,7 +45,8 @@ function fn_saveScore() {
             semester: semester,
             division: division,
             scores: scoresData,
-            subjectId: subjectIdArray
+            subjectId: subjectIdArray,
+            year: year
         };
 
     console.log(JSON.stringify(requestData));
@@ -57,7 +59,7 @@ function fn_saveScore() {
         success: function(response) {
             console.log('성공:', response);
             window.opener.fetchTableData();
-            window.close()
+            	window.close()
         },
         error: function(xhr, status, error) {
             console.error('에러:', error);
@@ -82,6 +84,7 @@ function fn_saveScore() {
 						<input type="hidden" name="subject_id" id="subject_id" value="${subjectIdList[status.index]}" />
 						<input type="hidden" name="semester" id="semester" value="${semester}" />
 						<input type="hidden" name="division" id="division" value="${division}" />
+						<input type="hidden" name="year" id="year" value="${year}" />
 					</th>
 
 					<td><input type="text" name="score" id="score" size="20" value="" /></td>

@@ -100,7 +100,7 @@
 		)
 	</insert>-->
 
-		<insert id="insertScore">
+	<insert id="insertScore">
 		INSERT INTO saa_student_scores_information (
 			scores_id,
 			student_id,
@@ -113,7 +113,7 @@
 		VALUE (
 			#{scoresId},
 			#{studentId},
-			#{nowYear} - CAST((SELECT (student_grade-#{grade}) FROM saa_student_register WHERE student_id = #{studentId}) AS INT),
+			#{year},
 			#{semester},
 			#{division},
 			#{subjectId},
