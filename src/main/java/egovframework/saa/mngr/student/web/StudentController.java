@@ -113,41 +113,42 @@ public class StudentController {
 
 	@RequestMapping(value = "/student/student_file_proc.do")
 	public String fileStudentProc(MultipartFile file, ModelMap model, HttpServletRequest request)
-			throws DataAccessException, RuntimeException, IOException, SQLException {
-		LOGGER.info("파일 처리");
+	        throws DataAccessException, RuntimeException, IOException, SQLException {
+	    LOGGER.info("파일 처리 시작");
 
-		String studentId = request.getParameter("student_id");
-		String fileId = UniqueId.generateUniqueId();
-		String originalFile = file.getOriginalFilename();
-		String storedName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-		String uploadAt = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-		//String uploadAt = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-		Long fileSize = file.getSize();
+	    String studentId = request.getParameter("student_id");
+	    LOGGER.info("학생 아이디: " + studentId);
+	    String originalFile = file.getOriginalFilename();
+	    String fileId = UniqueId.generateUniqueId();
+	    String storedName = UUID.randomUUID().toString() + "_" + originalFile;
+	    String uploadAt = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+	    Long fileSize = file.getSize();
 
-		EgovMap egovMap = new EgovMap();
-		egovMap.put("fileId", fileId);
-		egovMap.put("studentId", studentId);
-		egovMap.put("originalName", originalFile);
-		egovMap.put("storedName", storedName);
-		egovMap.put("fileSize", fileSize);
-		egovMap.put("uploadAt", uploadAt);
+	    EgovMap egovMap = new EgovMap();
+	    egovMap.put("fileId", fileId);
+	    egovMap.put("studentId", studentId);
+	    egovMap.put("originalName", originalFile);
+	    egovMap.put("storedName", storedName);
+	    egovMap.put("fileSize", fileSize);
+	    egovMap.put("uploadAt", uploadAt);
 
-		LOGGER.info(file);
-		LOGGER.info(uploadDir);
+	    LOGGER.info("파일 정보 DB에 저장: " + egovMap);
+	    studentService.insertStudentFile(egovMap);
 
-		studentService.insertStudentFile(egovMap);
+	    String filePath = uploadDir + storedName;
+	    File destFile = new File(filePath);
 
-		//파일 스토리지 저장
-		String filePath = uploadDir + storedName;
-        File destFile = new File(filePath);
-        try {
-            file.transferTo(destFile);
-        } catch (IOException e) {
+	    try {
+	        file.transferTo(destFile);
+	        LOGGER.info("파일 업로드 성공: " + storedName);
+	    } catch (IOException e) {
+	        LOGGER.error("파일 업로드 실패: " + e.getMessage());
+	        return "redirect:./student_list.do";
+	    }
 
-        	LOGGER.error(e.getMessage());
-        }
-		return "redirect:./student_list.do";
+	    return "redirect:./student_list.do";
 	}
+
 
 
 
