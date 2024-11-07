@@ -3,7 +3,10 @@ package egovframework.saa.mngr.student.web;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -102,7 +105,7 @@ public class StudentController {
 
 		String studentId = request.getParameter("student_id");
 
-
+		model.addAttribute("studentId", studentId);
 
 
 		return "saa/student/student_file";
@@ -114,10 +117,28 @@ public class StudentController {
 		LOGGER.info("파일 처리");
 
 		String studentId = request.getParameter("student_id");
+		String fileId = UniqueId.generateUniqueId();
+		String originalFile = file.getOriginalFilename();
+		String storedName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+		String uploadAt = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		//String uploadAt = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		Long fileSize = file.getSize();
+
+		EgovMap egovMap = new EgovMap();
+		egovMap.put("fileId", fileId);
+		egovMap.put("studentId", studentId);
+		egovMap.put("originalName", originalFile);
+		egovMap.put("storedName", storedName);
+		egovMap.put("fileSize", fileSize);
+		egovMap.put("uploadAt", uploadAt);
 
 		LOGGER.info(file);
 		LOGGER.info(uploadDir);
-		String filePath = uploadDir + file.getOriginalFilename();
+
+		studentService.insertStudentFile(egovMap);
+
+		//파일 스토리지 저장
+		String filePath = uploadDir + storedName;
         File destFile = new File(filePath);
         try {
             file.transferTo(destFile);
@@ -171,7 +192,7 @@ public class StudentController {
 			throws DataAccessException, RuntimeException, IOException, SQLException {
 		LOGGER.info("학생 등록 처리");
 
-		String studentId =
+		String studentId = UniqueId.generateUniqueId();
 		String studentName = request.getParameter("student_name");
 		String state = request.getParameter("state");
 		String entrance = request.getParameter("entrance");
