@@ -1,5 +1,6 @@
 package egovframework.saa.mngr.student.web;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -11,12 +12,17 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import egovframework.saa.module.student.service.StudentService;
+import egovframework.saa.utils.UniqueId;
 
 @Controller
 public class StudentController {
@@ -24,6 +30,9 @@ public class StudentController {
 	/** studentService */
 	@Resource(name = "studentService")
 	private StudentService studentService;
+
+   @Value("${file.upload-dir}")
+    private String uploadDir;
 
 	private static final Logger LOGGER = LogManager.getLogger(StudentController.class);
 
@@ -86,6 +95,41 @@ public class StudentController {
 
 	}
 
+	@RequestMapping(value = "/student/student_file.do")
+	public String fileStudent(ModelMap model, HttpServletRequest request)
+			throws DataAccessException, RuntimeException, IOException, SQLException {
+		LOGGER.info("파일");
+
+		String studentId = request.getParameter("student_id");
+
+
+
+
+		return "saa/student/student_file";
+	}
+
+	@RequestMapping(value = "/student/student_file_proc.do")
+	public String fileStudentProc(MultipartFile file, ModelMap model, HttpServletRequest request)
+			throws DataAccessException, RuntimeException, IOException, SQLException {
+		LOGGER.info("파일 처리");
+
+		String studentId = request.getParameter("student_id");
+
+		LOGGER.info(file);
+		LOGGER.info(uploadDir);
+		String filePath = uploadDir + file.getOriginalFilename();
+        File destFile = new File(filePath);
+        try {
+            file.transferTo(destFile);
+        } catch (IOException e) {
+
+        	LOGGER.error(e.getMessage());
+        }
+		return "redirect:./student_list.do";
+	}
+
+
+
 	@RequestMapping(value = "/student/student_info_view.do")
 	public String viewStudentInfo(ModelMap model, HttpServletRequest request)
 			throws DataAccessException, RuntimeException, IOException, SQLException {
@@ -127,7 +171,7 @@ public class StudentController {
 			throws DataAccessException, RuntimeException, IOException, SQLException {
 		LOGGER.info("학생 등록 처리");
 
-		String studentId = studentService.generateUniqueId();
+		String studentId =
 		String studentName = request.getParameter("student_name");
 		String state = request.getParameter("state");
 		String entrance = request.getParameter("entrance");

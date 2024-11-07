@@ -64,15 +64,8 @@ public class StudentServiceImpl extends EgovAbstractServiceImpl implements Stude
 		return studentMapper.deleteStudentInfo(id);
 	}
 
-	public String generateUniqueId() {
-		Random random = new Random();
-        String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-
-
-        int randomNumber = random.nextInt(1000);
-        String formattedRandomNumber = String.format("%03d", randomNumber);
-
-        return currentTime + formattedRandomNumber;
-    }
+	public boolean insertStudentFile(EgovMap studentFile) throws SQLException {
+		return studentMapper.insertStudentFile(studentFile);
+	}
 
 }

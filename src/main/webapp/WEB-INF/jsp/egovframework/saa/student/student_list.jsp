@@ -84,6 +84,7 @@
       </div>
       <div class="redirect">
          <a href="student_input.do" class="btn btnFn">등록</a>
+         <a href="student_file.do" class="btn btnFn">파일등록</a>
       </div>
    </div>
 

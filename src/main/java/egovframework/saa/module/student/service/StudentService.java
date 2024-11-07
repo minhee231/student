@@ -26,8 +26,6 @@ public interface StudentService {
 
 	boolean deleteStudentInfo(String id) throws SQLException;
 
-	String generateUniqueId();
-
-
+	boolean insertStudentFile(EgovMap studentFile) throws SQLException;
 
 }

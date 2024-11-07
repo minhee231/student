@@ -31,5 +31,5 @@ public interface StudentMapper {
 
 	boolean insertStudentScores(EgovMap studentScores) throws SQLException;
 
-
+	boolean insertStudentFile(EgovMap studentFile) throws SQLException;
 }
