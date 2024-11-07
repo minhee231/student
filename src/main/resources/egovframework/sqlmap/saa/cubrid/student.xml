@@ -147,6 +147,14 @@
 		)
 	</insert>
 
+	<select id="selectStudentFile" resultType="egovMap">
+		SELECT
+			*
+		FROM saa_student_file
+		WHERE student_id = #{id}
+	</select>
+
+
 	<select id="selectStudentView" resultType="egovMap">
 		SELECT
 			*

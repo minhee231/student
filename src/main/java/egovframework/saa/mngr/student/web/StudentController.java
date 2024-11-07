@@ -104,8 +104,10 @@ public class StudentController {
 		LOGGER.info("파일");
 
 		String studentId = request.getParameter("student_id");
-
 		model.addAttribute("studentId", studentId);
+		List<EgovMap> studentFiles = studentService.selectStudentFile(studentId);
+//
+//		model.addAttribute("studentFiles", studentFiles);
 
 
 		return "saa/student/student_file";

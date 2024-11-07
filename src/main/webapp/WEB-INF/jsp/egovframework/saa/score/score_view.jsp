@@ -124,7 +124,7 @@ function fetchTableData() {
 		        <option value="2" <c:if test="${subjectList[0].studentGrade == 2}">selected</c:if>>2학년</option>
 		        <option value="3" <c:if test="${subjectList[0].studentGrade == 3}">selected</c:if>>3학년</option>
 		    </select>
-		    <button type="button" onclick="setAction()">검색</button>
+		    <button type="button" onclick="fetchTableData()">검색</button>
 		</form>
 
 	<table class="dataTable">

@@ -4,35 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <title>파일 업로드</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery 라이브러리 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
     $(document).ready(function () {
         var studentId = ${studentId}
         $("#uploadBtn").click(function () {
-            var fileInput = $("#fileInput")[0]; // 파일 입력 필드
-            var file = fileInput.files[0]; // 선택된 파일
+            var fileInput = $("#fileInput")[0];
+            var file = fileInput.files[0];
 
-            // 파일이 선택되었는지 확인
             if (file) {
                 var formData = new FormData();
-                formData.append("file", file); // 선택한 파일을 FormData에 추가
-                formData.append("student_id", studentId); // 학생 ID 추가
+                formData.append("file", file);
+                formData.append("student_id", studentId);
 
-                // AJAX로 파일 전송
                 $.ajax({
-                    url: "student_file_proc.do",  // 파일을 처리할 URL (서버의 URL)
+                    url: "student_file_proc.do",
                     type: "POST",
                     data: formData,
                     processData: false,
                     contentType: false,
                     success: function (response) {
                         alert("파일 업로드 성공");
-                        console.log(response);  // 서버 응답
+                        console.log(response);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         alert("파일 업로드 실패");
-                        console.log(jqXHR, textStatus, errorThrown);  // 오류 응답
+                        console.log(jqXHR, textStatus, errorThrown);
                     }
                 });
             } else {

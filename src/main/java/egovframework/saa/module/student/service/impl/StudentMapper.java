@@ -15,6 +15,8 @@ public interface StudentMapper {
 
 	EgovMap selectStudentInfoView(String id) throws SQLException;
 
+	List<EgovMap> selectStudentFile(String id) throws SQLException;
+
 	String selectStudentGrade(String id) throws SQLException;
 
 	boolean insertStudent(EgovMap student) throws SQLException;

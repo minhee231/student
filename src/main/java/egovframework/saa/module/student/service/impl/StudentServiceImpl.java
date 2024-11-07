@@ -39,6 +39,10 @@ public class StudentServiceImpl extends EgovAbstractServiceImpl implements Stude
 		return studentMapper.selectStudentInfoView(id);
 	}
 
+	public List<EgovMap> selectStudentFile(String id) throws DataAccessException, SQLException {
+		return studentMapper.selectStudentFile(id);
+	}
+
 
 	public boolean insertStudent(EgovMap student) throws SQLException {
 		return studentMapper.insertStudent(student);
