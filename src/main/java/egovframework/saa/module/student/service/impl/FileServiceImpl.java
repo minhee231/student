@@ -27,4 +27,8 @@ public class FileServiceImpl extends EgovAbstractServiceImpl implements FileServ
 		return fileMapper.insertStudentFile(studentFile);
 	}
 
+	public boolean deleteStudentFile(String id) throws SQLException {
+		return fileMapper.deleteStudentFile(id);
+	}
+
 }

@@ -9,4 +9,6 @@ public interface FileService {
 	List<EgovMap> selectStudentFile(String id) throws SQLException;
 
 	boolean insertStudentFile(EgovMap studentFile) throws SQLException;
+
+	boolean deleteStudentFile(String id) throws SQLException;
 }

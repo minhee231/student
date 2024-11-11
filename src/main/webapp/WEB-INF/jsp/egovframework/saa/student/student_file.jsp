@@ -77,6 +77,30 @@
         });
     }
 
+    function fileDelete(button) {
+        const fileId = $(button).data('file-id');
+        const storedName = $(button).data("stored-name");
+        const studentId = ${studentId};
+
+        $.ajax({
+            url: '/file/file_delete.do', // 이동하지 않고 요청만 보냄
+            type: 'POST',
+            data: { fileId: fileId,
+            		storedName: storedName
+            	},
+            success: function(response) {
+                alert('파일이 성공적으로 삭제되었습니다.');
+//                window.location.href = `http://localhost:8088/student/student_view.do?student_id=${studentId}`;
+                window.location.href = "/student/student_view.do?student_id=" + studentId;
+            },
+            error: function(xhr, status, error) {
+                alert('파일 삭제에 실패하였습니다.');
+                console.error('Error:', error);
+            }
+        });
+    }
+
+
 
 </script>
 <style type="text/css">
@@ -105,7 +129,11 @@
                     onClick="fileDownload(this)">
                 파일 다운로드
             </button></td>
-           	<td><button>삭제</button></td>
+           	<td><button
+           		data-file-id="${files.fileId}"
+           		data-stored-name="${files.storedName}"
+           		onClick="fileDelete(this)"
+           	>삭제</button></td>
     		</tr>
     	</c:forEach>
     	<tr>

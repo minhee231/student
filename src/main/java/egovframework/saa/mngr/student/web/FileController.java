@@ -29,6 +29,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import egovframework.saa.module.student.service.FileService;
@@ -128,4 +129,23 @@ public class FileController {
 	            .headers(headers)
 	            .body(resource);
 	}
+
+	@RequestMapping(value = "/file/file_delete.do")
+	@ResponseBody
+	public ResponseEntity<String> deleteFile(
+			@RequestParam("fileId") String fileId,
+			@RequestParam("storedName") String storedName
+			) throws SQLException {
+
+	        String filePath = uploadDir + storedName;
+	        File file = new File(filePath);
+
+	        if (file.exists() && file.delete()) {
+	            fileService.deleteStudentFile(fileId);
+	            return ResponseEntity.ok("파일 삭제 성공");
+	        } else {
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 삭제 실패");
+	        }
+	}
+
 }

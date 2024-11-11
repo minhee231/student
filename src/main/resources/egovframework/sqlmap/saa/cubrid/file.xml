@@ -27,4 +27,9 @@
 			,#{uploadAt}
 		)
 	</insert>
+
+	<delete id="deleteStudentFile">
+		DELETE FROM saa_student_file
+		WHERE file_id = #{fileId}
+	</delete>
 </mapper>
