@@ -2,6 +2,7 @@ package egovframework.saa.mngr.student.web;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,7 +17,14 @@ import org.apache.log4j.Logger;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -106,8 +114,11 @@ public class StudentController {
 		String studentId = request.getParameter("student_id");
 		model.addAttribute("studentId", studentId);
 		List<EgovMap> studentFiles = studentService.selectStudentFile(studentId);
-//
-//		model.addAttribute("studentFiles", studentFiles);
+
+
+		LOGGER.info(studentFiles);
+		model.addAttribute("studentFiles", studentFiles);
+		model.addAttribute("studentId", studentId);
 
 
 		return "saa/student/student_file";
@@ -151,6 +162,33 @@ public class StudentController {
 	    return "redirect:./student_list.do";
 	}
 
+	@RequestMapping(value = "/student/file_download.do")
+	public HttpEntity<FileSystemResource> downloadFile(
+			@RequestParam("storedName") String storedName,
+			@RequestParam("originalName") String originalName
+			) {
+
+		LOGGER.info("파일 다운로드");
+
+	    String filePath = uploadDir + storedName;
+	    LOGGER.info(filePath);
+
+	    FileSystemResource resource = new FileSystemResource(filePath);
+
+	    if (!resource.exists()) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	    }
+
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setContentDisposition(ContentDisposition.builder("attachment")
+	            .filename(originalName, StandardCharsets.UTF_8)
+	            .build());
+	    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+
+	    return ResponseEntity.ok()
+	            .headers(headers)
+	            .body(resource);
+	}
 
 
 

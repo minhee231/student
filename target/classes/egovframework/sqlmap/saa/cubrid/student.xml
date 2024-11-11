@@ -129,9 +129,9 @@
 	</insert>
 
 	<insert id="insertStudentFile">
-		INSERT INTO ssa_student_file (
+		INSERT INTO saa_student_file (
 			file_id
-			,studnet_id
+			,student_id
 			,original_name
 			,stored_name
 			,file_size
