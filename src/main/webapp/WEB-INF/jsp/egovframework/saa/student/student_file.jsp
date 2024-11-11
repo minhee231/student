@@ -21,7 +21,7 @@
                 formData.append("student_id", studentId);
 
                 $.ajax({
-                    url: "student_file_proc.do",
+                    url: "/file/student_file_proc.do",
                     type: "POST",
                     data: formData,
                     processData: false,
@@ -46,7 +46,7 @@
         const storedName = $(button).data("stored-name");
 
         $.ajax({
-            url: '/student/file_download.do', // 파일 다운로드 요청을 처리할 서버 URL
+            url: '/file/file_download.do', // 파일 다운로드 요청을 처리할 서버 URL
             type: 'GET',
             data: {
                 originalName: originalName,
@@ -105,6 +105,7 @@
                     onClick="fileDownload(this)">
                 파일 다운로드
             </button></td>
+           	<td><button>삭제</button></td>
     		</tr>
     	</c:forEach>
     	<tr>

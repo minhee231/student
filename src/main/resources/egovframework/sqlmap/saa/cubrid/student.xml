@@ -128,31 +128,6 @@
 		)
 	</insert>
 
-	<insert id="insertStudentFile">
-		INSERT INTO saa_student_file (
-			file_id
-			,student_id
-			,original_name
-			,stored_name
-			,file_size
-			,upload_at
-		)
-		VALUES (
-			#{fileId}
-			,#{studentId}
-			,#{originalName}
-			,#{storedName}
-			,#{fileSize}
-			,#{uploadAt}
-		)
-	</insert>
-
-	<select id="selectStudentFile" resultType="egovMap">
-		SELECT
-			*
-		FROM saa_student_file
-		WHERE student_id = #{id}
-	</select>
 
 
 	<select id="selectStudentView" resultType="egovMap">
@@ -174,14 +149,6 @@
 			*
 		FROM saa_student_information
 		WHERE student_id = #{id}
-	</select>
-
-
-	<select id="selectSubjectList" resultType="egovMap">
-		SELECT
-			*
-		FROM ssa_student_subject_information
-		WHERE student_grade = #{grade};
 	</select>
 
 	<update id="updateStudent">

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.saa.module.student.service.impl.FileMapper">
+
+	<select id="selectStudentFile" resultType="egovMap">
+		SELECT
+			*
+		FROM saa_student_file
+		WHERE student_id = #{id}
+	</select>
+
+	<insert id="insertStudentFile">
+		INSERT INTO saa_student_file (
+			file_id
+			,student_id
+			,original_name
+			,stored_name
+			,file_size
+			,upload_at
+		)
+		VALUES (
+			#{fileId}
+			,#{studentId}
+			,#{originalName}
+			,#{storedName}
+			,#{fileSize}
+			,#{uploadAt}
+		)
+	</insert>
+</mapper>
