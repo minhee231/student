@@ -205,5 +205,28 @@ public class ScoreController {
 
 	    return ResponseEntity.ok("success");
 	}
+
+	@RequestMapping(value = "/score/score_rank.do")
+	public String rankStScores(ModelMap model, HttpServletRequest request)
+			throws DataAccessException, RuntimeException, IOException, SQLException {
+		LOGGER.info("학생 점수 랭킹");
+
+		String divion = request.getParameter("divion") == null ? "M" : request.getParameter("divion");
+		String semester = request.getParameter("semester") == null ? "1" : request.getParameter("grade");
+		String grade = request.getParameter("grade") == null ? "1" : request.getParameter("grade");
+		String year = scoreService.getNowYear();
+
+		EgovMap egovMap = new EgovMap();
+		egovMap.put("divion", divion);
+		egovMap.put("semester", semester);
+		egovMap.put("grade", grade);
+		egovMap.put("year", year);
+
+		List<EgovMap> scoresRanks = scoreService.selectScoresRank(egovMap);
+
+		model.addAttribute("scoresRanks", scoresRanks);
+		return "saa/score/score_rank";
+
+	}
 }
 

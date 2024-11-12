@@ -113,7 +113,7 @@
 <body>
     <h3>학생 파일 업로드</h3>
     <form class="center" id="fileForm" class="selectBox">
-    <table>
+    <table class="dataTable">
     	<tr>
     		<th></th>
     		<th>파일명</th>
@@ -122,7 +122,7 @@
     	<c:forEach var="files" items="${studentFiles}">
     		<tr>
     			<td></td>
-    			<td><c:out value="${files.originalName }"></c:out>
+    			<td	><c:out value="${files.originalName }"></c:out>
     			<td><button type="button" id="downloadBtn"
                     data-original-name="${files.originalName}"
                     data-stored-name="${files.storedName}"

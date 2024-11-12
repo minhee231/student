@@ -31,6 +31,10 @@ public class ScoreServiceImpl extends EgovAbstractServiceImpl implements ScoreSe
 		return scoreMapper.selectSubjectList(paramMap);
 	}
 
+	public List<EgovMap> selectScoresRank(EgovMap paramMap) throws DataAccessException, SQLException {
+		return scoreMapper.selectScoresRank(paramMap);
+	}
+
 	public String selectSubjectNameByScoreId(String scoresId) throws SQLException {
 		return scoreMapper.selectSubjectNameByScoreId(scoresId);
 	}

@@ -68,6 +68,28 @@
 		AND student_grade = #{grade}
 	</select>
 
+	<select id="selectScoresRank" resultType="egovMap">
+		SELECT DISTINCT
+			sc.student_grade,
+			sc.student_class,
+			sc.student_number,
+			(SELECT student_name FROM saa_student_register WHERE student_id = si.student_id) AS student_name,
+			ROUND(SUM(si.scores) OVER(PARTITION BY si.score_year,si.semester, si.score_divion,si.student_id),1) AS total_sum,
+			ROUND(AVG(si.scores) OVER(PARTITION BY si.score_year,si.semester, si.score_divion,si.student_id), 1) AS avg_score,
+		    si.score_year,
+		    si.student_id
+		FROM
+		    saa_student_scores_information AS si
+		JOIN
+		    ssa_student_subject_information AS s ON si.subject_id = s.subject_id
+		JOIN
+			saa_student_class_information AS sc ON si.student_id = sc.student_id AND sc.class_year =#{year}
+
+		WHERE si.semester = #{semester} AND si.score_divion = #{divion} AND s.student_grade = #{grade}
+		ORDER BY
+		    total_sum DESC;
+	</select>
+
 	<update id="updateScore">
 		UPDATE
 			saa_student_scores_information
