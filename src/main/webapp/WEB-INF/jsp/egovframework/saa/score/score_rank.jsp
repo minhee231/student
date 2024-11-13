@@ -31,8 +31,6 @@ function fetchTableData() {
           "&studentClass=" + encodeURIComponent(selectedstudentClass);
 
 	console.log(url);
-    /* var url = "/score/score_view.do?student_id=" + studentId + "&grade=" + selectedGrade;*/
-    console.log(url);
 
     $.ajax({
         url: url,

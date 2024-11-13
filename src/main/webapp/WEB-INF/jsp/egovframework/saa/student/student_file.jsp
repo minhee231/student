@@ -40,41 +40,38 @@
         });
     });
 
-    function fileDownload(button) {
-        const originalName = $(button).data("original-name");
-        const storedName = $(button).data("stored-name");
+	    function fileDownload(button) {
+	        const originalName = $(button).data("original-name");
+	        const storedName = $(button).data("stored-name");
 
-        $.ajax({
-            url: '/file/file_download.do', // 파일 다운로드 요청을 처리할 서버 URL
-            type: 'GET',
-            data: {
-                originalName: originalName,
-                storedName: storedName
-            },
-            xhrFields: {
-                responseType: 'blob' // 서버에서 파일 데이터가 Blob 형식으로 반환되는 경우 필요
-            },
-            success: function(data, status, xhr) {
-                // 파일 다운로드
-                const blob = new Blob([data]);
-                const downloadUrl = URL.createObjectURL(blob);
+	        $.ajax({
+	            url: '/file/file_download.do',
+	            type: 'GET',
+	            data: {
+	                originalName: originalName,
+	                storedName: storedName
+	            },
+	            xhrFields: {
+	                responseType: 'blob'
+	            },
+	            success: function(data, status, xhr) {
+	                const blob = new Blob([data]);
+	                const downloadUrl = URL.createObjectURL(blob);
 
-                // a 태그를 사용해 파일 다운로드
-                const a = document.createElement('a');
-                a.href = downloadUrl;
-                a.download = originalName; // 다운로드되는 파일의 이름 설정
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
+	                const a = document.createElement('a');
+	                a.href = downloadUrl;
+	                a.download = originalName;
+	                document.body.appendChild(a);
+	                a.click();
+	                document.body.removeChild(a);
 
-                // 객체 URL 해제
-                URL.revokeObjectURL(downloadUrl);
-            },
-            error: function(xhr, status, error) {
-                alert("파일 다운로드에 실패했습니다.");
-            }
-        });
-    }
+	                URL.revokeObjectURL(downloadUrl);
+	            },
+	            error: function(xhr, status, error) {
+	                alert("파일 다운로드에 실패했습니다.");
+	            }
+	        });
+	    }
 
     function fileDelete(button) {
         const fileId = $(button).data('file-id');
@@ -82,14 +79,13 @@
         const studentId = ${studentId};
 
         $.ajax({
-            url: '/file/file_delete.do', // 이동하지 않고 요청만 보냄
+            url: '/file/file_delete.do',
             type: 'POST',
             data: { fileId: fileId,
             		storedName: storedName
             	},
             success: function(response) {
                 alert('파일이 성공적으로 삭제되었습니다.');
-//                window.location.href = `http://localhost:8088/student/student_view.do?student_id=${studentId}`;
                 window.location.href = "/student/student_view.do?student_id=" + studentId;
             },
             error: function(xhr, status, error) {
