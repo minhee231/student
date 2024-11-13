@@ -136,13 +136,13 @@ h3 {
     background-color: #d32f2f;
 }
 
-input[type="text"], input[type="number"] {
+/* input[type="text"], input[type="number"] {
     width: 90%;
     padding: 4px;
-    border: 2px solid #ccc; /* 입력 필드 테두리도 두껍게 조정 */
+    border: 2px solid #ccc; 입력 필드 테두리도 두껍게 조정
     border-radius: 4px;
     box-sizing: border-box;
-}
+} */
 
 .left_table {
  float: left;

@@ -211,16 +211,26 @@ public class ScoreController {
 			throws DataAccessException, RuntimeException, IOException, SQLException {
 		LOGGER.info("학생 점수 랭킹");
 
+		String studentClass = (request.getParameter("studentClass") == null || request.getParameter("studentClass").isEmpty())
+                ? "all"
+                : request.getParameter("studentClass");
 		String divion = request.getParameter("divion") == null ? "M" : request.getParameter("divion");
-		String semester = request.getParameter("semester") == null ? "1" : request.getParameter("grade");
-		String grade = request.getParameter("grade") == null ? "1" : request.getParameter("grade");
-		String year = scoreService.getNowYear();
+		String semester = request.getParameter("semester") == null ? "1" : request.getParameter("semester");
+		String grade = request.getParameter("grade") == null ? "3" : request.getParameter("grade");
+		String Nowyear = scoreService.getNowYear();
+		String year = (request.getParameter("year") == null || request.getParameter("year").isEmpty())
+	              ? Nowyear
+	              : request.getParameter("year");
+
 
 		EgovMap egovMap = new EgovMap();
+		egovMap.put("studentClass", studentClass);
 		egovMap.put("divion", divion);
 		egovMap.put("semester", semester);
 		egovMap.put("grade", grade);
 		egovMap.put("year", year);
+
+		LOGGER.info(egovMap);
 
 		List<EgovMap> scoresRanks = scoreService.selectScoresRank(egovMap);
 

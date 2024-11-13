@@ -31,7 +31,6 @@
                         console.log(response);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
-                        alert("파일 업로드 실패");
                         console.log(jqXHR, textStatus, errorThrown);
                     }
                 });
@@ -121,7 +120,11 @@
     	</tr>
     	<c:forEach var="files" items="${studentFiles}">
     		<tr>
-    			<td></td>
+    			<td><button
+           		data-file-id="${files.fileId}"
+           		data-stored-name="${files.storedName}"
+           		onClick="fileDelete(this)"
+           	>삭제</button></td>
     			<td	><c:out value="${files.originalName }"></c:out>
     			<td><button type="button" id="downloadBtn"
                     data-original-name="${files.originalName}"
@@ -129,11 +132,7 @@
                     onClick="fileDownload(this)">
                 파일 다운로드
             </button></td>
-           	<td><button
-           		data-file-id="${files.fileId}"
-           		data-stored-name="${files.storedName}"
-           		onClick="fileDelete(this)"
-           	>삭제</button></td>
+
     		</tr>
     	</c:forEach>
     	<tr>

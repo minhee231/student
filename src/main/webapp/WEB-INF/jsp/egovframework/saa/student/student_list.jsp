@@ -24,7 +24,16 @@
 
 	    window.location.href = url.toString();
 	}
+
+	function openScoreRankPopup() {
+	    const url = "/score/score_rank.do";
+	    const popupOptions = "width=900,height=1200,scrollbars=yes,resizable=yes";
+
+	    window.open(url, "ScoreRankPopup", popupOptions);
+	}
+
 	</script>
+
 </head>
 <body>
 	<div>
@@ -84,7 +93,7 @@
       </div>
       <div class="redirect">
          <a href="student_input.do" class="btn btnFn">등록</a>
-         <a href="student_file.do" class="btn btnFn">파일등록</a>
+         <a href="#" class="btn btnFn" onClick="openScoreRankPopup()">학생 석차 보기</a>
       </div>
    </div>
 

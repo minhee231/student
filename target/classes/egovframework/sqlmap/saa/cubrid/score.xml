@@ -73,6 +73,8 @@
 			sc.student_grade,
 			sc.student_class,
 			sc.student_number,
+			si.semester,
+			si.score_divion,
 			(SELECT student_name FROM saa_student_register WHERE student_id = si.student_id) AS student_name,
 			ROUND(SUM(si.scores) OVER(PARTITION BY si.score_year,si.semester, si.score_divion,si.student_id),1) AS total_sum,
 			ROUND(AVG(si.scores) OVER(PARTITION BY si.score_year,si.semester, si.score_divion,si.student_id), 1) AS avg_score,
@@ -83,9 +85,15 @@
 		JOIN
 		    ssa_student_subject_information AS s ON si.subject_id = s.subject_id
 		JOIN
-			saa_student_class_information AS sc ON si.student_id = sc.student_id AND sc.class_year =#{year}
+			saa_student_class_information AS sc ON si.student_id = sc.student_id AND si.score_year = #{year} AND sc.class_year = #{year}
 
-		WHERE si.semester = #{semester} AND si.score_divion = #{divion} AND s.student_grade = #{grade}
+		WHERE si.semester = #{semester}
+			AND si.score_divion = #{divion}
+			AND sc.student_grade = #{grade}
+			<if test="studentClass != 'all'">
+				AND sc.student_class = #{studentClass}
+			</if>
+
 		ORDER BY
 		    total_sum DESC;
 	</select>
