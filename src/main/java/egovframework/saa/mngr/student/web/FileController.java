@@ -45,7 +45,7 @@ public class FileController {
 
 	private static final Logger LOGGER = LogManager.getLogger(StudentController.class);
 
-	@RequestMapping(value = "/file/student_file.do")
+	@RequestMapping(value = "/file/student_file_list.do")
 	public String fileStudent(ModelMap model, HttpServletRequest request)
 			throws DataAccessException, RuntimeException, IOException, SQLException {
 		LOGGER.info("파일");
@@ -61,7 +61,7 @@ public class FileController {
 		model.addAttribute("studentId", studentId);
 
 
-		return "saa/student/student_file";
+		return "saa/student/student_file_list";
 	}
 
 	@RequestMapping(value = "/file/student_file_proc.do")
@@ -102,8 +102,8 @@ public class FileController {
 	    return "redirect:./student_list.do";
 	}
 
-	@RequestMapping(value = "/file/file_download.do")
-	public HttpEntity<FileSystemResource> downloadFile(
+	@RequestMapping(value = "/file/file_download_proc.do")
+	public HttpEntity<FileSystemResource> downloadFileProc(
 			@RequestParam("storedName") String storedName,
 			@RequestParam("originalName") String originalName
 			) {
@@ -130,9 +130,9 @@ public class FileController {
 	            .body(resource);
 	}
 
-	@RequestMapping(value = "/file/file_delete.do")
+	@RequestMapping(value = "/file/file_delete_proc.do")
 	@ResponseBody
-	public ResponseEntity<String> deleteFile(
+	public ResponseEntity<String> deleteFileProc(
 			@RequestParam("fileId") String fileId,
 			@RequestParam("storedName") String storedName
 			) throws SQLException {

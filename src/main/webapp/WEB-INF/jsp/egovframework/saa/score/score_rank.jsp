@@ -24,7 +24,7 @@ function fetchTableData() {
 
     console.log(selectedYear)
 
-    var url = "score_rank.do?year=" + encodeURIComponent(selectedYear) +
+    var url = "score_rank_list.do?year=" + encodeURIComponent(selectedYear) +
           "&semester=" + encodeURIComponent(selectedSemester) +
           "&divion=" + encodeURIComponent(selectedDivion) +
           "&grade=" + encodeURIComponent(selectedGrade) +

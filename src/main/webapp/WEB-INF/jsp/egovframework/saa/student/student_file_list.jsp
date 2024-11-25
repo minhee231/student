@@ -45,7 +45,7 @@
 	        const storedName = $(button).data("stored-name");
 
 	        $.ajax({
-	            url: '/file/file_download.do',
+	            url: '/file/file_download_proc.do',
 	            type: 'GET',
 	            data: {
 	                originalName: originalName,
@@ -79,7 +79,7 @@
         const studentId = ${studentId};
 
         $.ajax({
-            url: '/file/file_delete.do',
+            url: '/file/file_delete_proc.do',
             type: 'POST',
             data: { fileId: fileId,
             		storedName: storedName

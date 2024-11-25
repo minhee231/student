@@ -26,7 +26,7 @@
 	}
 
 	function openScoreRankPopup() {
-	    const url = "/score/score_rank.do";
+	    const url = "	/score/score_rank_list.do";
 	    const popupOptions = "width=900,height=1200,scrollbars=yes,resizable=yes";
 
 	    window.open(url, "ScoreRankPopup", popupOptions);

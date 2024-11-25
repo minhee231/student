@@ -172,7 +172,7 @@
 	<c:import url="/score/score_view.do?student_id=${studentView.studentId }"></c:import>
 </div>
 <div id="file">
-	<c:import url="/file/student_file.do?student_id=${studentView.studentId}"></c:import>
+	<c:import url="/file/student_file_list.do?student_id=${studentView.studentId}"></c:import>
 </div>
 
 </body>

@@ -206,7 +206,7 @@ public class ScoreController {
 	    return ResponseEntity.ok("success");
 	}
 
-	@RequestMapping(value = "/score/score_rank.do")
+	@RequestMapping(value = "/score/score_rank_list.do")
 	public String rankStScores(ModelMap model, HttpServletRequest request)
 			throws DataAccessException, RuntimeException, IOException, SQLException {
 		LOGGER.info("학생 점수 랭킹");
